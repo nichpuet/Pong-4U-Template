@@ -143,10 +143,13 @@ namespace Pong
             p2.X = this.Width - PADDLE_EDGE - p2.Width;
             p2.Y = this.Height / 2 - p2.Height / 2;
 
-            // TODO set Width and Height of ball
-            // TODO set starting X position for ball to middle of screen, (use this.Width and ball.Width)
-            // TODO set starting Y position for ball to middle of screen, (use this.Height and ball.Height)
-
+            //set Width and Height of ball
+            //set starting X position for ball to middle of screen, (use this.Width and ball.Width)
+            //set starting Y position for ball to middle of screen, (use this.Height and ball.Height)
+            ball.Height = 12;
+            ball.Width = 24;
+            ball.X = this.Width / 2 - ball.Width / 2;
+            ball.Y = this.Height / 2 - ball.Height / 2 ;
         }
 
         /// <summary>
@@ -165,9 +168,10 @@ namespace Pong
 
             #region update paddle positions
 
-            if (aKeyDown == true && p1.Y > 0)
+            if (aKeyDown == true && p1.Y > this.Height - p1.Height)
             {
                 // TODO create code to move player 1 paddle up using p1.Y and PADDLE_SPEED
+                    p1.Y = p1.Y + PADDLE_SPEED;
             }
 
             // TODO create an if statement and code to move player 1 paddle down using p1.Y and PADDLE_SPEED
@@ -248,10 +252,16 @@ namespace Pong
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
             // TODO draw paddles using FillRectangle
-
+            e.Graphics.FillRectangle(drawBrush, p1);
+            e.Graphics.FillRectangle(drawBrush, p2);
             // TODO draw ball using FillRectangle
-
+            e.Graphics.FillEllipse(drawBrush, ball);
             // TODO draw scores to the screen using DrawString
+            e.Graphics.DrawString("Player 1 Score", drawFont, drawBrush, 34, 25);
+            e.Graphics.DrawString(player1Score.ToString(), drawFont, drawBrush,92,50);
+
+            e.Graphics.DrawString(player2Score.ToString(), drawFont, drawBrush, this.Width - 92, 50);
+            e.Graphics.DrawString("Player 2 Score", drawFont, drawBrush, this.Width - 150, 25);
         }
 
     }
