@@ -26,7 +26,7 @@ namespace Pong
         #region global values
 
         //graphics objects for drawing
-        SolidBrush drawBrush = new SolidBrush(Color.White);
+        SolidBrush drawBrush = new SolidBrush(Color.Black);
         Font drawFont = new Font("Courier New", 10);
 
         // Sounds for game
@@ -92,9 +92,10 @@ namespace Pong
                         Close();
                     }
                     break;
+
             }
         }
-        
+
         // -- YOU DO NOT NEED TO MAKE CHANGES TO THIS METHOD
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
@@ -121,6 +122,8 @@ namespace Pong
         /// </summary>
         private void SetParameters()
         {
+            this.BackColor = Color.LightCoral;
+            startLabel.ForeColor = Color.Black;
             if (newGameOk)
             {
                 player1Score = player2Score = 0;
@@ -149,7 +152,7 @@ namespace Pong
             ball.Height = 12;
             ball.Width = 12;
             ball.X = this.Width / 2 - ball.Width / 2;
-            ball.Y = this.Height / 2 - ball.Height / 2 ;
+            ball.Y = this.Height / 2 - ball.Height / 2;
         }
 
         /// <summary>
@@ -185,11 +188,11 @@ namespace Pong
             if (aKeyDown == true && p1.Y > 0)
             {
                 // TODO create code to move player 1 paddle up using p1.Y and PADDLE_SPEED
-                    p1.Y = p1.Y - PADDLE_SPEED;
+                p1.Y = p1.Y - PADDLE_SPEED;
             }
 
             // TODO create an if statement and code to move player 1 paddle down using p1.Y and PADDLE_SPEED
-            if (zKeyDown == true && p1.Y < this.Height - p1.Height )
+            if (zKeyDown == true && p1.Y < this.Height - p1.Height)
             {
                 p1.Y = p1.Y + PADDLE_SPEED;
             }
@@ -226,23 +229,23 @@ namespace Pong
             #region ball collision with paddles
 
             // TODO create if statment that checks p1 collides with ball and if it does
-                 // --- play a "paddle hit" sound and
-                 // --- use ballMoveRight boolean to change direction
-            if (p1.IntersectsWith(ball)&& ballMoveRight == true)
+            // --- play a "paddle hit" sound and
+            // --- use ballMoveRight boolean to change direction
+            if (p1.IntersectsWith(ball) && ballMoveRight == true)
             {
                 ballMoveRight = false;
                 collisionSound.Play();
             }
-            if(p2.IntersectsWith(ball)&& ballMoveRight == false)
+            if (p2.IntersectsWith(ball) && ballMoveRight == false)
             {
                 ballMoveRight = true;
                 collisionSound.Play();
             }
-            
+
             // TODO create if statment that checks p2 collides with ball and if it does
-                // --- play a "paddle hit" sound and
-                // --- use ballMoveRight boolean to change direction
-            
+            // --- play a "paddle hit" sound and
+            // --- use ballMoveRight boolean to change direction
+
             /*  ENRICHMENT
              *  Instead of using two if statments as noted above see if you can create one
              *  if statement with multiple conditions to play a sound and change direction
@@ -273,7 +276,7 @@ namespace Pong
                     SetParameters();
                 }
             }
-            if (ball.X +ball.Width > this.Width)
+            if (ball.X + ball.Width > this.Width)
             {
                 scoreSound.Play();
                 player1Score++;
@@ -298,11 +301,10 @@ namespace Pong
             // TODO same as above but this time check for collision with the right wall
 
             #endregion
-            
+
             //refresh the screen, which causes the Form1_Paint method to run
             this.Refresh();
         }
-        
         /// <summary>
         /// Displays a message for the winner when the game is over and allows the user to either select
         /// to play again or end the program
@@ -312,6 +314,7 @@ namespace Pong
         {
             newGameOk = true;
             gameUpdateLoop.Stop();
+            startLabel.Text = winner;
             startLabel.Visible = true;
             this.Refresh();
             // TODO create game over logic
