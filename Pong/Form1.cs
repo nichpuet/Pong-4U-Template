@@ -272,13 +272,27 @@ namespace Pong
                     }
                     SetParameters();
                 }
-                // TODO
-                // --- play score sound
-                // --- update player 2 score
-
-                // TODO use if statement to check to see if player 2 has won the game. If true run 
-                // GameOver method. Else change direction of ball and call SetParameters method.
-
+            }
+            if (ball.X +ball.Width > this.Width)
+            {
+                scoreSound.Play();
+                player1Score++;
+                if (player1Score == gameWinScore)
+                {
+                    GameOver("Player 1 Wins");
+                }
+                else
+                {
+                    if (ballMoveRight == true)
+                    {
+                        ballMoveRight = false;
+                    }
+                    else
+                    {
+                        ballMoveRight = true;
+                    }
+                    SetParameters();
+                }
             }
 
             // TODO same as above but this time check for collision with the right wall
@@ -298,7 +312,6 @@ namespace Pong
         {
             newGameOk = true;
             gameUpdateLoop.Stop();
-            startLabel.Text = winner;
             startLabel.Visible = true;
             this.Refresh();
             // TODO create game over logic
