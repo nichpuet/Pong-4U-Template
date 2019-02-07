@@ -1,7 +1,7 @@
 ﻿/*
  * Description:     A basic PONG simulator
- * Author:           
- * Date:            
+ * Author:    Nick Puetz       
+ * Date:      February 7th 2019      
  */
 
 #region libraries
@@ -40,6 +40,8 @@ namespace Pong
         Boolean newGameOk = true;
 
         //ball directions, speed, and rectangle
+        bool p3MoveDown = true;
+        const int P3_SPEED = 2;
         Boolean ballMoveRight = true;
         Boolean ballMoveDown = true;
         const int BALL_SPEED = 4;
@@ -47,7 +49,7 @@ namespace Pong
 
         //paddle speeds and rectangles
         const int PADDLE_SPEED = 4;
-        Rectangle p1, p2;
+        Rectangle p1, p2, p3;
 
         //player and game scores
         int player1Score = 0;
@@ -135,8 +137,8 @@ namespace Pong
             //set starting position for paddles on new game and point scored 
             const int PADDLE_EDGE = 20;  // buffer distance between screen edge and paddle            
 
-            p1.Width = p2.Width = 10;    //height for both paddles set the same
-            p1.Height = p2.Height = 40;  //width for both paddles set the same
+            p1.Width = p2.Width = p3.Width = 10;    //height for both paddles set the same
+            p1.Height = p2.Height = p3.Height = 40;  //width for both paddles set the same
 
             //p1 starting position
             p1.X = PADDLE_EDGE;
@@ -145,6 +147,10 @@ namespace Pong
             //p2 starting position
             p2.X = this.Width - PADDLE_EDGE - p2.Width;
             p2.Y = this.Height / 2 - p2.Height / 2;
+
+            //p3 start position
+            p3.X = this.Width / 2 - p3.Width / 2;
+            p3.Y = this.Height / 2 - p3.Height / 2;
 
             //set Width and Height of ball
             //set starting X position for ball to middle of screen, (use this.Width and ball.Width)
@@ -161,6 +167,36 @@ namespace Pong
         /// </summary>
         private void gameUpdateLoop_Tick(object sender, EventArgs e)
         {
+            #region p3 paddle
+            if (p3.IntersectsWith(ball))
+            {
+                collisionSound.Play();
+                if (ballMoveRight == true)
+                {
+                    ballMoveRight = false;
+                }
+                else if (ballMoveRight == false)
+                {
+                    ballMoveRight = true;
+                }
+            }
+            if (p3MoveDown == true)
+            {
+                p3.Y = p3.Y + P3_SPEED;
+            }
+            if (p3MoveDown == false)
+            {
+                p3.Y = p3.Y - P3_SPEED;
+            }
+            if (p3.Y + p3.Height >= this.Height)
+            {
+                p3MoveDown = false;
+            }
+            if (p3.Y <= 0)
+            {
+                p3MoveDown = true;
+            }
+            #endregion
             #region update ball position
 
             // TODO create code to move ball either left or right based on ballMoveRight and using BALL_SPEED
@@ -330,6 +366,7 @@ namespace Pong
             // TODO draw paddles using FillRectangle
             e.Graphics.FillRectangle(drawBrush, p1);
             e.Graphics.FillRectangle(drawBrush, p2);
+            e.Graphics.FillRectangle(drawBrush, p3);
             // TODO draw ball using FillRectangle
             e.Graphics.FillEllipse(drawBrush, ball);
             // TODO draw scores to the screen using DrawString
